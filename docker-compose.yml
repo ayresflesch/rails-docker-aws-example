@@ -4,8 +4,17 @@ services:
   application:
     build: .
     container_name: "application"
+    depends_on:
+      - database
     volumes:
       - .:/app
     ports:
       - "3000:3000"
+    env_file: .env
+  database:
+    container_name: "application_db"
+    image: postgres:12.1
+    volumes:
+      - ./db_data:/var/lib/postgresql/data
+      # - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 

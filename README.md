@@ -1,24 +1,11 @@
-# README
+# Setup
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+To start using the application you must create the database and run the migrations.
 
-Things you may want to cover:
+The `application` service name is defined on the `docker-compose.yml` file
 
-* Ruby version
 
-* System dependencies
+```
+$ docker-compose exec application rake db:setup db:migrate
+```
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...

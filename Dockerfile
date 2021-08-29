@@ -6,9 +6,9 @@ COPY . /app/
 RUN apk add --update --no-cache \
   build-base \
   tzdata \
-  sqlite-dev \
   nodejs \
-  yarn
+  yarn \
+  postgresql-dev
 
 RUN bundle install --jobs 3
 RUN yarn install --check-files
