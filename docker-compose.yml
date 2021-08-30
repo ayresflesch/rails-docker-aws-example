@@ -4,17 +4,19 @@ services:
   application:
     build: .
     container_name: "application"
+    env_file: .env
     depends_on:
       - database
     volumes:
       - .:/app
     ports:
       - "3000:3000"
-    env_file: .env
   database:
     container_name: "application_db"
-    image: postgres:12.1
+    image: mysql:8
+    env_file: .env
     volumes:
-      - ./db_data:/var/lib/postgresql/data
-      # - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./db_data:/var/lib/mysql
+    ports:
+      - 3307:3306
 

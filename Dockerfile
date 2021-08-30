@@ -8,11 +8,9 @@ RUN apk add --update --no-cache \
   tzdata \
   nodejs \
   yarn \
-  postgresql-dev
+  mariadb-dev
 
 RUN bundle install --jobs 3
 RUN yarn install --check-files
 
 CMD [ "rails", "server", "-b", "0.0.0.0"]
-
-
