@@ -11,6 +11,6 @@ RUN apk add --update --no-cache \
   mariadb-dev
 
 RUN bundle install --jobs 3
-RUN yarn install --check-files
+RUN yarn install
 
 CMD [ "rails", "server", "-b", "0.0.0.0"]
