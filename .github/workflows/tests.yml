@@ -28,7 +28,7 @@ jobs:
         run: bundle install
 
       - name: Create database
-        run: rake db:setup
+        run: rake db:migrate
 
       - name: Run tests
         run: bin/rails test
