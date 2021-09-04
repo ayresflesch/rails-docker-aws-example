@@ -25,12 +25,12 @@ jobs:
           ruby-version: 2.7.0
 
       - name: Install dependencies
-        run: bundle install
+        run: bundle install && yarn install
 
       - name: Create database
         run: rake db:create db:migrate
 
       - name: Run tests
-        run: bin/rails test
+        run: RAILS_ENV=test bin/rails test
 
 
