@@ -15,7 +15,7 @@ jobs:
       - name: Set up MySQL
         run: |
           sudo /etc/init.d/mysql start
-          mysql -e 'CREATE DATABASE ${{ env.MYSQL_DATABASE }};' -u${{ env.MYSQL_USER }} -p${{ env.MYSQL_PASSWORD }}
+          mysql -u${{ env.MYSQL_USER }} -p${{ env.MYSQL_PASSWORD }}
 
       - name: Check out repository code
         uses: actions/checkout@v2
