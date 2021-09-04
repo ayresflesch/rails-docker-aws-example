@@ -1,0 +1,43 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+
+    env:
+      MYSQL_DATABASE: test_db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+
+    steps:
+      - name: Set up MySQL
+        run: |
+          sudo /etc/init.d/mysql start
+          mysql -u${{ env.MYSQL_USER }} -p${{ env.MYSQL_PASSWORD }}
+
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+      - uses: ruby/setup-ruby@477b21f02be01bcb8030d50f37cfec92bfa615b6
+        with:
+          ruby-version: 2.7.0
+
+      - name: Install dependencies
+        run: bundle install && yarn install
+
+      - name: Create database
+        run: rake db:create db:migrate
+
+      - name: Run tests
+        run: bin/rails db:environment:set RAILS_ENV=test && bin/rails test
+
+
