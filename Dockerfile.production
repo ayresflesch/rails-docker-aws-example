@@ -1,0 +1,35 @@
+# Use phusion/passenger-full as base image. To make your builds reproducible, make
+# sure you lock down to a specific version, not to `latest`!
+# See https://github.com/phusion/passenger-docker/blob/master/CHANGELOG.md for
+# a list of version numbers.
+FROM phusion/passenger-ruby27:1.0.19
+
+# Set correct environment variables.
+ENV HOME /root
+
+# Use baseimage-docker's init process.
+CMD ["/sbin/my_init"]
+
+# ...put your own build instructions here...
+RUN rm -f /etc/service/nginx/down
+RUN rm /etc/nginx/sites-enabled/default
+ADD webapp.conf /etc/nginx/sites-enabled/webapp.conf
+RUN mkdir /home/app/webapp
+
+COPY --chown=app:app . /home/app/webapp
+
+WORKDIR /home/app/webapp
+
+RUN bundle check || bundle install --jobs 3
+
+RUN curl -fsSL https://deb.nodesource.com/setup_12.x | bash - && apt-get install -y nodejs tzdata build-essential
+
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+
+RUN apt update && apt install -y yarn && yarn install
+
+RUN RAILS_ENV=production SECRET_KEY_BASE=`bin/rake secret` bundle exec rake assets:precompile
+
+# Clean up APT when done.
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
