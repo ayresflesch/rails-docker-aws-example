@@ -12,7 +12,7 @@ $ docker-compose exec application rake db:setup db:migrate && yarn install
 # Database credentials
 Database credentials are located on the `.env` file.
 
-One must notice that on the `docker-compose.yml` the port exposed is the `3307`.
+One must notice that the port exposed is `3307` on `docker-compose.yml`.
 
 ```
 DATABASE_HOST=database
